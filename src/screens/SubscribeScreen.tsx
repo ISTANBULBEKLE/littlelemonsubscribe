@@ -8,10 +8,12 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
+import {validateEmail} from '../utils';
 
 const SubscribeScreen = () => {
   // Add subscribe screen code here
   const [subscribe, onSubmitSubscribe] = useState('');
+  const isEmailValid = validateEmail(subscribe);
 
   return (
     <View>
@@ -30,8 +32,12 @@ const SubscribeScreen = () => {
         keyboardType="email-address"
       />
       <Pressable
-        style={subscribeStyles.pressableArea}
-        onPress={Alert.alert('Thanks for subscribing, stay tunned!')}>
+        style={[
+          subscribeStyles.pressableArea,
+          !isEmailValid && subscribeStyles.dissablePressableArea,
+        ]}
+        disabled={!isEmailValid}
+        onPress={() => Alert.alert('Thanks for subscribing, stay tunned!')}>
         <Text style={subscribeStyles.pressableText}>Subscribe</Text>
       </Pressable>
     </View>
@@ -68,6 +74,9 @@ const subscribeStyles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     width: 300,
+  },
+  dissablePressableArea: {
+    backgroundColor: 'grey',
   },
   pressableText: {
     fontSize: 15,
